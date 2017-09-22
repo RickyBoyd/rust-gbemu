@@ -1,0 +1,4 @@
+[root]
+name = "rust-gbemu"
+version = "0.1.0"
+
