@@ -152,14 +152,24 @@ impl Cpu {
             self.registers.a &= $val;
             self.registers.flags.reset();
             self.registers.flags.zero.val = self.registers.a == 0;
-        4 }) );
+        }) );
 
         macro_rules! or (
         ($val:expr) => ({
             self.registers.a ^= $val;
             self.registers.flags.reset();
             self.registers.flags.zero.val = self.registers.a == 0;
-        4 }) );
+        }) );
+
+        macro_rules! inc (
+        ($val:expr) => ({
+            $val = $val.wrapping_add(1);
+        }) );
+
+        macro_rules! dec (
+        ($val:expr) => ({
+            $val = $val.wrapping_sub(1);
+        }) );
         
         match opcode {
             //NOP
@@ -171,9 +181,9 @@ impl Cpu {
             //INC BC
             0x03 => { let bc = self.registers.bc(); self.registers.set_bc(bc.wrapping_add(1)); }
             //INC B
-            0x04 => { self.registers.b = self.registers.b.wrapping_add(1); }
+            0x04 => { inc!(self.registers.b); }
             //DEC B
-            0x05 => { self.registers.b = self.registers.b.wrapping_sub(1); }
+            0x05 => { dec!(self.registers.b); }
             //LD B,d8
             0x06 => {  }
             //RLCA
@@ -187,9 +197,9 @@ impl Cpu {
             //DEC BC
             0x0B => {  }
             //INC C
-            0x0C => {  }
+            0x0C => { inc!(self.registers.c); }
             //DEC C
-            0x0D => {  }
+            0x0D => { dec!(self.registers.c); }
             //LD C,d8
             0x0E => {  }
             //RRCA
@@ -203,9 +213,9 @@ impl Cpu {
             //INC DE
             0x13 => {  }
             //INC D
-            0x14 => {  }
+            0x14 => { inc!(self.registers.d); }
             //DEC D
-            0x15 => {  }
+            0x15 => { dec!(self.registers.d); }
             //LD D,d8
             0x16 => {  }
             //RLA
@@ -219,9 +229,9 @@ impl Cpu {
             //DEC DE
             0x1B => {  }
             //INC E
-            0x1C => {  }
+            0x1C => { inc!(self.registers.e); }
             //DEC E
-            0x1D => {  }
+            0x1D => { dec!(self.registers.e); }
             //LD E,d8
             0x1E => {  }
             //RRA
@@ -235,9 +245,9 @@ impl Cpu {
             //INC HL
             0x23 => {  }
             //INC H
-            0x24 => {  }
+            0x24 => { inc!(self.registers.h); }
             //DEC H
-            0x25 => {  }
+            0x25 => { dec!(self.registers.h); }
             //LD H,d8
             0x26 => {  }
             //DAA
@@ -251,9 +261,9 @@ impl Cpu {
             //DEC HL
             0x2B => {  }
             //INC L
-            0x2C => {  }
+            0x2C => { inc!(self.registers.l); }
             //DEC L
-            0x2D => {  }
+            0x2D => { dec!(self.registers.l); }
             //LD L,d8
             0x2E => {  }
             //CPL
@@ -283,9 +293,9 @@ impl Cpu {
             //DEC SP
             0x3B => {  }
             //INC A
-            0x3C => {  }
+            0x3C => { inc!(self.registers.a); }
             //DEC A
-            0x3D => {  }
+            0x3D => { dec!(self.registers.a); }
             //LD A,d8
             0x3E => {  }
             //CCF
