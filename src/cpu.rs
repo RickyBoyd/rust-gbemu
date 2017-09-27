@@ -120,24 +120,6 @@ impl Cpu {
         }
     }
 
-    // fn xor(&mut self, input: u8) {
-    //     self.registers.flags.reset();
-    //     self.registers.a ^= input;
-    //     self.registers.flags.zero.val = self.registers.a == 0;
-    // }
-
-    fn or(&mut self, input: u8) {
-        self.registers.flags.reset();
-        self.registers.a |= input;
-        self.registers.flags.zero.val = self.registers.a == 0;
-    }
-
-    fn and(&mut self, input: u8) {
-        self.registers.flags.reset();
-        self.registers.a &= input;
-        self.registers.flags.zero.val = self.registers.a == 0;
-    }
-
     fn add8(&mut self, x: u8, y: u8) -> u8 {
         let (r, overflowed) = x.overflowing_add(y);
         self.registers.flags.carry.val = overflowed;
